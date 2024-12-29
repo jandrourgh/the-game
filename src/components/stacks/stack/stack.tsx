@@ -7,8 +7,15 @@ interface IStackProps {
 	direction: "up" | "down";
 	start: number;
 	toAdd: undefined | number;
-	onCardAdded: (number: number) => void;
+	onCardAdded: (number: number, direction: "up" | "down") => void;
+	id: string;
 }
+
+export type TStack = {
+	direction: "up" | "down";
+	lastCardPlayed?: number;
+	id: string;
+};
 
 export const Stack = ({
 	toAdd,
@@ -48,7 +55,7 @@ export const Stack = ({
 	const addCard = () => {
 		if (!toAdd) return;
 		setCards([...cards, toAdd]);
-		onCardAdded(toAdd);
+		onCardAdded(toAdd, direction);
 	};
 	return (
 		<div

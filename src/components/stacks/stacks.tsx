@@ -1,42 +1,31 @@
-import { Stack } from "./stack/stack";
+import { FC } from "react";
+import { Stack, TStack } from "./stack/stack";
 import styles from "./stacks.module.scss";
 
-type TStacksProps = {
+interface IStacksProps {
 	dataToDrag: undefined | number;
-	onCardAdded: (number: number) => void;
-};
+	onCardAdded: (number: number, id: string) => void;
+	stacks: TStack[];
+}
 
-export const Stacks = ({ dataToDrag, onCardAdded }: TStacksProps) => {
+export const Stacks: FC<IStacksProps> = ({
+	dataToDrag,
+	onCardAdded,
+	stacks,
+}) => {
 	return (
 		<div className={styles.stacks}>
-			<Stack
-				key="stack-1"
-				direction="up"
-				start={1}
-				toAdd={dataToDrag}
-				onCardAdded={onCardAdded}
-			/>
-			<Stack
-				key="stack-2"
-				direction="up"
-				start={1}
-				toAdd={dataToDrag}
-				onCardAdded={onCardAdded}
-			/>
-			<Stack
-				key="stack-3"
-				direction="down"
-				start={100}
-				toAdd={dataToDrag}
-				onCardAdded={onCardAdded}
-			/>
-			<Stack
-				key="stack-4"
-				direction="down"
-				start={100}
-				toAdd={dataToDrag}
-				onCardAdded={onCardAdded}
-			/>
+			{stacks.map(({ direction, id }) => {
+				return (
+					<Stack
+						direction={direction}
+						id={id}
+						onCardAdded={(number) => onCardAdded(number, id)}
+						start={direction === "up" ? 1 : 100}
+						toAdd={dataToDrag}
+					/>
+				);
+			})}
 		</div>
 	);
 };

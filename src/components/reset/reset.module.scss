@@ -1,0 +1,15 @@
+.reset {
+	position: absolute;
+	top: 5vh;
+	left: 5vw;
+	z-index: 10;
+	height: 90vh;
+	width: 90vw;
+	padding: 2em;
+	background-color: rgba(36, 36, 36, 0.9);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	border: 1px solid white;
+}
