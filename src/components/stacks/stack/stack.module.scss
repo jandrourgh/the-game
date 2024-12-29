@@ -5,7 +5,20 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
+	-webkit-box-shadow: inset 9px 10px 58px -39px rgba(69, 69, 69, 0.65);
+	-moz-box-shadow: inset 9px 10px 58px -39px rgba(69, 69, 69, 0.65);
+	box-shadow: inset 9px 10px 58px -39px rgba(69, 69, 69, 0.65);
+	border-radius: 24px;
+	padding: 8px;
+	margin: 8px;
 	& > * {
 		pointer-events: none;
+	}
+	@media screen and (max-width: 480px) {
+		height: unset;
+		width: unset;
+		h2 {
+			margin: 0;
+		}
 	}
 }

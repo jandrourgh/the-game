@@ -24,6 +24,11 @@ export const Stack = ({
 		[cards]
 	);
 
+	const getDirection = () => {
+		if (direction == "up") return <>&uarr;</>;
+		if (direction == "down") return <>&darr;</>;
+	};
+
 	const checkCards = () => {
 		if (lastCard === undefined) return true;
 		if (!toAdd) return false;
@@ -62,9 +67,11 @@ export const Stack = ({
 			}}
 			className={styles.stack}
 		>
-			<h2>{`${start} -> ${direction}`}</h2>
+			<h2>
+				{`${start}`} {getDirection()}
+			</h2>
 
-			{lastCard && cards.length ? <Card number={lastCard} /> : <h1>-</h1>}
+			<Card number={lastCard} />
 		</div>
 	);
 };

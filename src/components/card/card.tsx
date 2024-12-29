@@ -1,21 +1,24 @@
 import styles from "./card.module.scss";
 
 export type TCard = {
-	number: number;
+	number: number | undefined;
 	playCard?: (number: number) => void;
 	playing?: boolean;
 };
 
 export const Card = (props: TCard) => {
 	const { number, playCard, playing } = props;
+	const isNumber = Number(number) > 0;
 	return (
 		<div
-			className={`${styles.card} ${playing && styles.playing}`}
+			className={`${styles.card} ${playing && styles.playing} ${
+				!isNumber && styles.nan
+			}`}
 			draggable
-			onDragStart={() => playCard && playCard(number)}
-			onClick={() => playCard && playCard(number)}
+			onDragStart={() => number && playCard && playCard(number)}
+			onClick={() => number && playCard && playCard(number)}
 		>
-			<h2>{number}</h2>
+			<h2>{isNumber ? number : "-"}</h2>
 		</div>
 	);
 };

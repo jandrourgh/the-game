@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import "./App.css";
+import "./App.scss";
 import { Stacks } from "./components/stacks/stacks";
 import { Hand } from "./components/hand/hand";
 
@@ -62,7 +62,7 @@ function App() {
 
 	return (
 		<>
-			<h2>Cards Remaining: {cardStack.length}</h2>
+			<h2 className="title">Cards Remaining: {cardStack.length}</h2>
 			<Stacks onCardAdded={onCardAdded} dataToDrag={dataToDrag} />
 			<hr />
 			{playing ? (
