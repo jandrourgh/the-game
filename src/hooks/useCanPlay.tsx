@@ -1,24 +1,12 @@
 import { useMemo } from "react";
 import { TStack } from "../components/stacks/stack/stack";
+import { checkCardStack } from "../common/utils";
 
 export const useCanPlay = (hand: number[], stacks: TStack[]) => {
 	const canPlay = useMemo(() => {
-		const canByStack = stacks.map((stack) => {
-			const can = stack.lastCardPlayed === undefined || false;
-			if (stack.direction === "down") {
-				return hand.some((card) =>
-					stack.lastCardPlayed && card < stack.lastCardPlayed
-						? true
-						: can
-				);
-			} else {
-				return hand.some((card) =>
-					stack.lastCardPlayed && card > stack.lastCardPlayed
-						? true
-						: can
-				);
-			}
-		});
+		const canByStack = stacks.map((stack) =>
+			hand.some((card) => checkCardStack(card, stack))
+		);
 		return !hand.length || canByStack.find((value) => value === true);
 	}, [hand, stacks]);
 	return {

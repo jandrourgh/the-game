@@ -1,3 +1,5 @@
+import { TStack } from "../components/stacks/stack/stack";
+
 function shuffle(array: Array<number>) {
 	let currentIndex = array.length;
 
@@ -23,4 +25,19 @@ export const generateCardStack = (length: number) => {
 		shuffle(cards);
 	}
 	return cards;
+};
+
+export const checkCardStack = (card: number | undefined, stack: TStack) => {
+	if (!card) return false;
+	if (
+		stack.lastCardPlayed === card + 10 ||
+		stack.lastCardPlayed === card - 10
+	)
+		return true;
+	if (stack.lastCardPlayed === undefined) return true;
+	if (stack.direction === "down") {
+		return card < stack.lastCardPlayed;
+	} else {
+		return card > stack.lastCardPlayed;
+	}
 };

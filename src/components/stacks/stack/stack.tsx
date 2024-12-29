@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import styles from "./stack.module.scss";
 import { Card } from "../../card/card";
+import { checkCardStack } from "../../../common/utils";
 
 interface IStackProps {
 	direction: "up" | "down";
@@ -22,6 +23,7 @@ export const Stack = ({
 	direction,
 	onCardAdded,
 	start,
+	id,
 }: IStackProps) => {
 	const [cards, setCards] = useState<number[]>([]);
 	const [okToAdd, setOkToAdd] = useState(false);
@@ -36,22 +38,6 @@ export const Stack = ({
 		if (direction == "down") return <>&darr;</>;
 	};
 
-	const checkCards = () => {
-		if (lastCard === undefined) return true;
-		if (!toAdd) return false;
-		let ok = undefined;
-		if (direction === "up") {
-			ok = toAdd > lastCard;
-		} else if (direction === "down") {
-			ok = toAdd < lastCard;
-		}
-		if (toAdd - 10 == lastCard || lastCard - 10 == toAdd) {
-			ok = true;
-		}
-		return Boolean(ok);
-		// setOkToAdd(Boolean(ok));
-	};
-
 	const addCard = () => {
 		if (!toAdd) return;
 		setCards([...cards, toAdd]);
@@ -60,11 +46,25 @@ export const Stack = ({
 	return (
 		<div
 			onClick={() => {
-				if (checkCards()) {
+				if (
+					checkCardStack(toAdd, {
+						direction: direction,
+						id: id,
+						lastCardPlayed: lastCard,
+					})
+				) {
 					addCard();
 				}
 			}}
-			onDragEnter={() => setOkToAdd(checkCards())}
+			onDragEnter={() =>
+				setOkToAdd(
+					checkCardStack(toAdd, {
+						direction: direction,
+						id: id,
+						lastCardPlayed: lastCard,
+					})
+				)
+			}
 			onDragLeave={() => setOkToAdd(false)}
 			onDragOver={(evt) => evt.preventDefault()}
 			onDrop={(evt) => {

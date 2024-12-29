@@ -64,9 +64,14 @@ function App() {
 	return (
 		<>
 			{!canPlay && (
-				<Reset remaining={cardStack.length} resetGame={resetGame} />
+				<Reset
+					remaining={cardStack.length + hand.length}
+					resetGame={resetGame}
+				/>
 			)}
-			<h2 className="title">Cards Remaining: {cardStack.length}</h2>
+			<h2 className="title">
+				Cards Remaining: {cardStack.length + hand.length}
+			</h2>
 			<Stacks
 				onCardAdded={(number, id) => onCardAdded(number, id)}
 				dataToDrag={dataToDrag}
