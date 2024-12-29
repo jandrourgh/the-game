@@ -21,7 +21,7 @@ function App() {
 		{ lastCardPlayed: undefined, direction: "up", id: "3" },
 		{ lastCardPlayed: undefined, direction: "up", id: "4" },
 	]);
-	const { canPlay } = useCanPlay(hand, stacks);
+	const { canPlay } = useCanPlay(hand, stacks, cardStack);
 	const resetGame = () => {
 		//to-do hacer esto un poco más elegante
 		window.location.reload();
