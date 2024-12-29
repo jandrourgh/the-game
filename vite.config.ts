@@ -8,7 +8,18 @@ export default defineConfig({
 		react(),
 		VitePWA({
 			registerType: "autoUpdate",
-			manifest: { display: "standalone" },
+			manifest: {
+				display: "standalone",
+				icons: [
+					{
+						src: "./public/icon.png",
+						sizes: "120x120",
+						type: "image/png",
+					},
+				],
+				background_color: "#242424",
+				theme_color: "#242424",
+			},
 		}),
 	],
 });
