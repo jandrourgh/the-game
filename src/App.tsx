@@ -58,9 +58,6 @@ function App() {
 		init(hand.length);
 	}, [hand, init]);
 
-	// to-do llevar la cuenta de las cartas jugadas para saber si puedes jugar algo de la mano
-	// const canPlay = useMemo(() => {}, [playing, hand]);
-
 	return (
 		<>
 			{!canPlay && (
