@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useState } from "react";
 import "./App.css";
-import { Card, TCard } from "./components/card";
-import { Stacks } from "./components/stacks";
-import { Deck } from "./components/deck";
+import { Stacks } from "./components/stacks/stacks";
+import { Hand } from "./components/hand/hand";
 
-function shuffle(array: Array<TCard>) {
+const HAND_SIZE = 6;
+
+function shuffle(array: Array<number>) {
 	let currentIndex = array.length;
 
 	// While there remain elements to shuffle...
@@ -23,34 +24,61 @@ function shuffle(array: Array<TCard>) {
 
 const generateCardStack = (length: number) => {
 	const cards = Array.from(Array(length)).map((value, index) => {
-		return { number: Number(value || index + 2) };
+		return value || index + 2;
 	});
 	shuffle(cards);
 	return cards;
 };
 
 function App() {
-	const [cardStack, setCardStack] = useState<TCard[]>(generateCardStack(98));
+	const [cardStack, setCardStack] = useState<number[]>(generateCardStack(98));
 	const [dataToDrag, setDataToDrag] = useState<undefined | number>(undefined);
+	const [hand, setHand] = useState<number[]>([]);
+	const [playing, setPlaying] = useState(false);
 
-	const cardToReveal = useMemo(
-		() => cardStack.length && cardStack[cardStack.length - 1].number,
-		[cardStack]
+	const onCardAdded = (card: number) => {
+		setHand([...hand.filter((filtered) => filtered !== card)]);
+	};
+
+	const playCard = (card: number) => {
+		setDataToDrag(card);
+	};
+
+	const init = useCallback(
+		(diff: number) => {
+			const cards = cardStack.slice(0, HAND_SIZE - diff);
+			setHand([...hand, ...cards]);
+			setCardStack([
+				...cardStack.filter((card) => !cards.includes(card)),
+			]);
+			setPlaying(true);
+		},
+		[cardStack, hand]
 	);
 
-	const onCardAdded = () => {
-		console.log("onCardAdded", cardStack.slice(0, -1));
-		setCardStack([...cardStack.slice(0, -1)]);
-	};
+	const onNextButton = useCallback(() => {
+		init(hand.length);
+	}, [hand, init]);
 
 	return (
 		<>
 			<h2>Cards Remaining: {cardStack.length}</h2>
 			<Stacks onCardAdded={onCardAdded} dataToDrag={dataToDrag} />
-			<Deck
-				onDragStart={() => setDataToDrag(cardToReveal)}
-				cardToReveal={cardToReveal}
-			/>
+			<hr />
+			{playing ? (
+				<>
+					<Hand playCard={(card) => playCard(card)} cards={hand} />
+
+					{/* to do: disabled dinámico con cartas jugadas */}
+					<button disabled={hand.length > 4} onClick={onNextButton}>
+						{hand.length > 4
+							? `Play ${hand.length - 4} more`
+							: "Next"}
+					</button>
+				</>
+			) : (
+				<button onClick={() => init(0)}>START</button>
+			)}
 		</>
 	);
 }

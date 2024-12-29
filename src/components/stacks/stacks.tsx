@@ -1,9 +1,9 @@
-import { Stack } from "./stack";
+import { Stack } from "./stack/stack";
 import styles from "./stacks.module.scss";
 
 type TStacksProps = {
 	dataToDrag: undefined | number;
-	onCardAdded: () => void;
+	onCardAdded: (number: number) => void;
 };
 
 export const Stacks = ({ dataToDrag, onCardAdded }: TStacksProps) => {

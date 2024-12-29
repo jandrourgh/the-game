@@ -1,12 +1,11 @@
-.card {
+.stack {
 	height: 300px;
 	width: 210px;
-	border: 1px solid grey;
-	border-radius: 24px;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: #242424;
-	margin: 24px auto;
+	& > * {
+		pointer-events: none;
+	}
 }
