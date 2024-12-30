@@ -1,4 +1,5 @@
 import { TStack } from "../components/stacks/stack/stack";
+import { Direction } from "./enums";
 
 function shuffle(array: Array<number>) {
 	let currentIndex = array.length;
@@ -17,7 +18,14 @@ function shuffle(array: Array<number>) {
 	}
 }
 
-export const generateCardStack = (length: number) => {
+export const generateStacks = () => [
+	{ lastCardPlayed: undefined, direction: Direction.up, id: "1" },
+	{ lastCardPlayed: undefined, direction: Direction.up, id: "2" },
+	{ lastCardPlayed: undefined, direction: Direction.down, id: "3" },
+	{ lastCardPlayed: undefined, direction: Direction.down, id: "4" },
+];
+
+export const generateDeck = (length: number) => {
 	const cards = Array.from(Array(length)).map((value, index) => {
 		return value || index + 2;
 	});
@@ -27,7 +35,7 @@ export const generateCardStack = (length: number) => {
 	return cards;
 };
 
-export const checkCardStack = (card: number | undefined, stack: TStack) => {
+export const checkDeck = (card: number | undefined, stack: TStack) => {
 	if (!card) return false;
 	if (
 		stack.lastCardPlayed === card + 10 ||

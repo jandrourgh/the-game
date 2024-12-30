@@ -2,18 +2,19 @@ import { useMemo, useState } from "react";
 
 import styles from "./stack.module.scss";
 import { Card } from "../../card/card";
-import { checkCardStack } from "../../../common/utils";
+import { checkDeck } from "../../../common/utils";
+import { Direction } from "../../../common/enums";
 
 interface IStackProps {
-	direction: "up" | "down";
+	direction: Direction;
 	start: number;
 	toAdd: undefined | number;
-	onCardAdded: (number: number, direction: "up" | "down") => void;
+	onCardAdded: (number: number, direction: Direction) => void;
 	id: string;
 }
 
 export type TStack = {
-	direction: "up" | "down";
+	direction: Direction;
 	lastCardPlayed?: number;
 	id: string;
 };
@@ -34,8 +35,8 @@ export const Stack = ({
 	);
 
 	const getDirection = () => {
-		if (direction == "up") return <>&uarr;</>;
-		if (direction == "down") return <>&darr;</>;
+		if (direction == Direction.up) return <>&uarr;</>;
+		if (direction == Direction.down) return <>&darr;</>;
 	};
 
 	const addCard = () => {
@@ -47,7 +48,7 @@ export const Stack = ({
 		<div
 			onClick={() => {
 				if (
-					checkCardStack(toAdd, {
+					checkDeck(toAdd, {
 						direction: direction,
 						id: id,
 						lastCardPlayed: lastCard,
@@ -58,7 +59,7 @@ export const Stack = ({
 			}}
 			onDragEnter={() =>
 				setOkToAdd(
-					checkCardStack(toAdd, {
+					checkDeck(toAdd, {
 						direction: direction,
 						id: id,
 						lastCardPlayed: lastCard,

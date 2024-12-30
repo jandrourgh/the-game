@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Stack, TStack } from "./stack/stack";
 import styles from "./stacks.module.scss";
+import { Direction } from "../../common/enums";
 
 interface IStacksProps {
 	dataToDrag: undefined | number;
@@ -19,9 +20,10 @@ export const Stacks: FC<IStacksProps> = ({
 				return (
 					<Stack
 						direction={direction}
+						key={id}
 						id={id}
 						onCardAdded={(number) => onCardAdded(number, id)}
-						start={direction === "up" ? 1 : 100}
+						start={direction === Direction.up ? 1 : 100}
 						toAdd={dataToDrag}
 					/>
 				);
