@@ -6,7 +6,7 @@ import { Reset } from "../components/reset/reset";
 import { Stacks } from "../components/stacks/stacks";
 import { Hand } from "../components/hand/hand";
 import { useFirebase } from "../hooks/useFirebase";
-import { useJoin } from "../hooks/useJoin";
+// import { useJoin } from "../hooks/useJoin";
 import { useCreate } from "../hooks/useCreate";
 
 const HAND_SIZE = 6;
@@ -22,7 +22,7 @@ export const Main = () => {
 	const { canPlay } = useCanPlay(hand, stacks, deck);
 	const { app } = useFirebase();
 	const [name, setName] = useState("");
-	const join = useJoin(app, "");
+	// const join = useJoin(app, "");
 	const { createSession, isInviting } = useCreate(app, name);
 
 	const resetGame = () => {
