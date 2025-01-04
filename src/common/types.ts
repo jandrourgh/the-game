@@ -1,4 +1,13 @@
-export type User = {
+import { TStack } from "../components/stacks/stack/stack";
+
+export type TUser = {
 	name: string;
 	uid: string;
+};
+
+export type TSessionData = {
+	owner: string;
+	deck: number[];
+	stacks: TStack[];
+	players: TUser[];
 };

@@ -18,15 +18,16 @@ function shuffle(array: Array<number>) {
 	}
 }
 
-export const generateStacks = () => [
-	{ lastCardPlayed: undefined, direction: Direction.up, id: "1" },
-	{ lastCardPlayed: undefined, direction: Direction.up, id: "2" },
-	{ lastCardPlayed: undefined, direction: Direction.down, id: "3" },
-	{ lastCardPlayed: undefined, direction: Direction.down, id: "4" },
-];
+export const generateStacks = () =>
+	[
+		{ direction: Direction.up, id: "1" },
+		{ direction: Direction.up, id: "2" },
+		{ direction: Direction.down, id: "3" },
+		{ direction: Direction.down, id: "4" },
+	].map((stack) => ({ ...stack, cards: [] }));
 
 export const generateDeck = (length: number) => {
-	const cards = Array.from(Array(length)).map((value, index) => {
+	const cards: number[] = Array.from(Array(length)).map((value, index) => {
 		return value || index + 2;
 	});
 	for (let i = 0; i < 4; i++) {

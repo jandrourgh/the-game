@@ -7,27 +7,36 @@ interface IStacksProps {
 	dataToDrag: undefined | number;
 	onCardAdded: (number: number, id: string) => void;
 	stacks: TStack[];
+	remainingCards: number;
 }
 
 export const Stacks: FC<IStacksProps> = ({
 	dataToDrag,
 	onCardAdded,
 	stacks,
+	remainingCards,
 }) => {
 	return (
-		<div className={styles.stacks}>
-			{stacks.map(({ direction, id }) => {
-				return (
-					<Stack
-						direction={direction}
-						key={id}
-						id={id}
-						onCardAdded={(number) => onCardAdded(number, id)}
-						start={direction === Direction.up ? 1 : 100}
-						toAdd={dataToDrag}
-					/>
-				);
-			})}
-		</div>
+		<>
+			<h2 className={styles.remaining}>
+				Remaining cards: {remainingCards}
+			</h2>
+			<div className={styles.stacks}>
+				{stacks.map(({ direction, id, cards }) => {
+					return (
+						<Stack
+							direction={direction}
+							key={id}
+							id={id}
+							onCardAdded={(number) => onCardAdded(number, id)}
+							start={direction === Direction.up ? 1 : 100}
+							toAdd={dataToDrag}
+							cards={cards}
+						/>
+					);
+				})}
+			</div>
+			<hr />
+		</>
 	);
 };

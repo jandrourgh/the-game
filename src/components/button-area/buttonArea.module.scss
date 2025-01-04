@@ -1,0 +1,19 @@
+.buttonArea {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-direction: column;
+	div {
+		margin: 3rem;
+	}
+	input {
+		padding: 1em;
+		font-weight: bold;
+	}
+}
+
+.buttons {
+	button {
+		margin: 1rem;
+	}
+}

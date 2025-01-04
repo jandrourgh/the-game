@@ -11,12 +11,14 @@ interface IStackProps {
 	toAdd: undefined | number;
 	onCardAdded: (number: number, direction: Direction) => void;
 	id: string;
+	cards: number[];
 }
 
 export type TStack = {
 	direction: Direction;
 	lastCardPlayed?: number;
 	id: string;
+	cards: number[];
 };
 
 export const Stack = ({
@@ -25,10 +27,11 @@ export const Stack = ({
 	onCardAdded,
 	start,
 	id,
+	cards,
 }: IStackProps) => {
-	const [cards, setCards] = useState<number[]>([]);
+	// const [cards, setCards] = useState<number[]>([]);
 	const [okToAdd, setOkToAdd] = useState(false);
-
+	const [show, setShow] = useState(false);
 	const lastCard = useMemo(
 		() => (cards.length ? cards[cards.length - 1] : undefined),
 		[cards]
@@ -41,45 +44,59 @@ export const Stack = ({
 
 	const addCard = () => {
 		if (!toAdd) return;
-		setCards([...cards, toAdd]);
 		onCardAdded(toAdd, direction);
 	};
-	return (
-		<div
-			onClick={() => {
-				if (
-					checkDeck(toAdd, {
-						direction: direction,
-						id: id,
-						lastCardPlayed: lastCard,
-					})
-				) {
-					addCard();
-				}
-			}}
-			onDragEnter={() =>
-				setOkToAdd(
-					checkDeck(toAdd, {
-						direction: direction,
-						id: id,
-						lastCardPlayed: lastCard,
-					})
-				)
-			}
-			onDragLeave={() => setOkToAdd(false)}
-			onDragOver={(evt) => evt.preventDefault()}
-			onDrop={(evt) => {
-				evt.preventDefault();
-				if (okToAdd) addCard();
-				setOkToAdd(false);
-			}}
-			className={styles.stack}
-		>
-			<h2>
-				{`${start}`} {getDirection()}
-			</h2>
 
-			<Card number={lastCard} />
+	return (
+		<div>
+			<div
+				onClick={() => {
+					if (
+						checkDeck(toAdd, {
+							direction: direction,
+							id: id,
+							lastCardPlayed: lastCard,
+							cards: cards,
+						})
+					) {
+						addCard();
+					}
+				}}
+				onDragEnter={() =>
+					setOkToAdd(
+						checkDeck(toAdd, {
+							direction: direction,
+							id: id,
+							lastCardPlayed: lastCard,
+							cards: cards,
+						})
+					)
+				}
+				onDragLeave={() => setOkToAdd(false)}
+				onDragOver={(evt) => evt.preventDefault()}
+				onDrop={(evt) => {
+					evt.preventDefault();
+					if (okToAdd) addCard();
+					setOkToAdd(false);
+				}}
+				className={styles.stack}
+			>
+				<h2>
+					{`${start}`} {getDirection()}
+				</h2>
+
+				<Card number={lastCard} />
+				{show && (
+					<ul>
+						{cards.map((card) => (
+							<li key={card + "-" + id}>{card}</li>
+						))}
+					</ul>
+				)}
+			</div>
+			<div>
+				<button onClick={() => setShow(!show)}>show</button>
+			</div>
 		</div>
 	);
 };
