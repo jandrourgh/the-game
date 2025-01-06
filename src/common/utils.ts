@@ -18,13 +18,12 @@ function shuffle(array: Array<number>) {
 	}
 }
 
-export const generateStacks = () =>
-	[
-		{ direction: Direction.up, id: "1" },
-		{ direction: Direction.up, id: "2" },
-		{ direction: Direction.down, id: "3" },
-		{ direction: Direction.down, id: "4" },
-	].map((stack) => ({ ...stack, cards: [] }));
+export const generateStacks = () => [
+	{ direction: Direction.up, id: "1", cards: [] },
+	{ direction: Direction.up, id: "2", cards: [] },
+	{ direction: Direction.down, id: "3", cards: [] },
+	{ direction: Direction.down, id: "4", cards: [] },
+];
 
 export const generateDeck = (length: number) => {
 	const cards: number[] = Array.from(Array(length)).map((value, index) => {

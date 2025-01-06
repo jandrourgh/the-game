@@ -29,7 +29,6 @@ export const Stack = ({
 	id,
 	cards,
 }: IStackProps) => {
-	// const [cards, setCards] = useState<number[]>([]);
 	const [okToAdd, setOkToAdd] = useState(false);
 	const [show, setShow] = useState(false);
 	const lastCard = useMemo(

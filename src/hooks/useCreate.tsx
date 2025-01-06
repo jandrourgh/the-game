@@ -12,10 +12,13 @@ export const useCreate = (app: FirebaseApp, name: string) => {
 
 	const share = useCallback(
 		async (id: string) => {
+			const url = new URL(location.href);
+			url.searchParams.append("session", id);
+			console.log(url);
 			const shareData: ShareData = {
 				title: "The Game Invitation",
 				text: `${name} wants you to play The Game`,
-				url: `${location.href}${id}/`,
+				url: url.toString() + "/",
 			};
 			navigator.share(shareData);
 			setIsinviting(false);
@@ -27,10 +30,7 @@ export const useCreate = (app: FirebaseApp, name: string) => {
 		setIsinviting(true);
 		const uid = nanoid();
 		const deck = generateDeck(98);
-		const stacks = generateStacks().map((stack) => ({
-			direction: stack.direction,
-			id: stack.id,
-		}));
+		const stacks = generateStacks();
 		const players = [{ name: name, uid: uid }];
 		const alphabet = "1234567890";
 		const getRoomNumber = customAlphabet(alphabet, 6);

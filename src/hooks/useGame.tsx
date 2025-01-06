@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { generateDeck, generateStacks } from "../common/utils";
 import { useCanPlay } from "./useCanPlay";
 import { TStack } from "../components/stacks/stack/stack";
@@ -15,9 +15,15 @@ export const useGame = (app: FirebaseApp) => {
 	const [playedCards, setPlayedCards] = useState<number[]>([]);
 	const [stacks, setStacks] = useState<TStack[]>(generateStacks());
 	const { canPlay } = useCanPlay(hand, stacks, deck);
-	const { connect, updateDeck, updateStacks, nextTurn } = useOnline(app, () =>
-		setPlaying(true)
-	);
+	const { connect, nextTurn, updateDeck, updateStacks, sessionData } =
+		useOnline(app);
+
+	useEffect(() => {
+		if (!sessionData) return;
+		if (!playing) setPlaying(true);
+		setDeck(sessionData.deck);
+		setStacks(sessionData.stacks);
+	}, [sessionData, playing]);
 
 	const init = useCallback(
 		(currentCards: number) => {
@@ -25,13 +31,9 @@ export const useGame = (app: FirebaseApp) => {
 			setHand([...hand, ...cards]);
 			const newDeck = [...deck.filter((card) => !cards.includes(card))];
 			setDeck(newDeck);
-			setPlaying(true);
-
-			updateDeck(deck).then(() => {
-				nextTurn("pip");
-			});
+			updateDeck(newDeck);
 		},
-		[deck, hand, updateDeck, nextTurn]
+		[deck, hand, updateDeck]
 	);
 
 	const resetGame = () => {
@@ -63,7 +65,8 @@ export const useGame = (app: FirebaseApp) => {
 
 	const onNextButton = useCallback(() => {
 		init(hand.length);
-	}, [hand, init]);
+		nextTurn("pip");
+	}, [hand, init, nextTurn]);
 
 	return {
 		resetGame,

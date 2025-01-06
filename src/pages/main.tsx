@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Reset } from "../components/reset/reset";
 import { Stacks } from "../components/stacks/stacks";
 import { Hand } from "../components/hand/hand";
@@ -6,9 +6,11 @@ import { useFirebase } from "../hooks/useFirebase";
 import { ButtonArea } from "../components/button-area/buttonArea";
 import { useGame } from "../hooks/useGame";
 import styles from "./main.module.scss";
+import { useSearchParams } from "react-router";
 
 export const Main = () => {
 	const { app } = useFirebase();
+	const [searchParams] = useSearchParams();
 
 	const [online, setOnline] = useState(true);
 
@@ -26,6 +28,13 @@ export const Main = () => {
 		resetGame,
 		connect,
 	} = useGame(app);
+
+	useEffect(() => {
+		console.log(searchParams);
+		const session = searchParams.get("session");
+		if (!session) return;
+		connect(session);
+	}, [searchParams, connect]);
 
 	const onSessionCreated = (id: string) => {
 		connect(id);

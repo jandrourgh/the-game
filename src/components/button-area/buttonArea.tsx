@@ -30,7 +30,7 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 		if (id) {
 			onSessionJoined(id);
 		}
-	}, [id]);
+	}, [id, onSessionJoined]);
 
 	useEffect(() => {
 		if (roomID) {

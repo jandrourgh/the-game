@@ -9,10 +9,10 @@ import {
 	onSnapshot,
 } from "firebase/firestore";
 import { TSessionData } from "../common/types";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { TStack } from "../components/stacks/stack/stack";
 
-export const useOnline = (app: FirebaseApp, connectedCallback: () => void) => {
+export const useOnline = (app: FirebaseApp) => {
 	const [sessionData, setSessionData] = useState<TSessionData | undefined>(
 		undefined
 	);
@@ -23,26 +23,27 @@ export const useOnline = (app: FirebaseApp, connectedCallback: () => void) => {
 	>(undefined);
 	const db = useMemo(() => getFirestore(app), [app]);
 
-	const connect = async (roomID: string) => {
-		setLoading(true);
-		const roomRef = doc(db, "matches", roomID);
-		const roomDoc = await getDoc(roomRef);
-		if (roomDoc.exists()) {
-			setSessionData(roomDoc.data() as TSessionData);
-			setRoom(roomRef);
-			connectedCallback();
-			onSnapshot(roomRef, (evt) => {
-				setSessionData(evt.data() as TSessionData);
-			});
-		} else {
-			setError("Error getting data");
-		}
-		setLoading(false);
-	};
+	const connect = useCallback(
+		async (roomID: string) => {
+			setLoading(true);
+			const roomRef = doc(db, "matches", roomID);
+			const roomDoc = await getDoc(roomRef);
+			if (roomDoc.exists()) {
+				setSessionData(roomDoc.data() as TSessionData);
+				setRoom(roomRef);
+				onSnapshot(roomRef, (evt) => {
+					setSessionData(evt.data() as TSessionData);
+				});
+			} else {
+				setError("Error getting data");
+			}
+			setLoading(false);
+		},
+		[db]
+	);
 
 	const updateStacks = async (stacks: TStack[]) => {
 		if (!room || !sessionData) return;
-		console.log(sessionData, stacks);
 		const newSessionData: TSessionData = { ...sessionData, stacks: stacks };
 		await setDoc(room, newSessionData);
 	};
