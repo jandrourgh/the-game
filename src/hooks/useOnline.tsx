@@ -28,16 +28,18 @@ export const useOnline = (app: FirebaseApp) => {
 			setLoading(true);
 			const roomRef = doc(db, "matches", roomID);
 			const roomDoc = await getDoc(roomRef);
+			setLoading(false);
 			if (roomDoc.exists()) {
 				setSessionData(roomDoc.data() as TSessionData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
 					setSessionData(evt.data() as TSessionData);
 				});
+				return Promise.resolve(true);
 			} else {
 				setError("Error getting data");
+				return Promise.reject("Error getting data");
 			}
-			setLoading(false);
 		},
 		[db]
 	);

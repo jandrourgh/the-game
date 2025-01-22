@@ -18,13 +18,6 @@ export const useGame = (app: FirebaseApp) => {
 	const { connect, nextTurn, updateDeck, updateStacks, sessionData } =
 		useOnline(app);
 
-	useEffect(() => {
-		if (!sessionData) return;
-		if (!playing) setPlaying(true);
-		setDeck(sessionData.deck);
-		setStacks(sessionData.stacks);
-	}, [sessionData, playing]);
-
 	const init = useCallback(
 		(currentCards: number) => {
 			const cards = deck.slice(0, HAND_SIZE - currentCards);
@@ -35,6 +28,17 @@ export const useGame = (app: FirebaseApp) => {
 		},
 		[deck, hand, updateDeck]
 	);
+
+	const startGame = () => {
+		init(0);
+		setPlaying(true);
+	};
+	useEffect(() => {
+		console.log({ sessionData });
+		if (!sessionData) return;
+		setDeck(sessionData.deck);
+		setStacks(sessionData.stacks);
+	}, [sessionData]);
 
 	const resetGame = () => {
 		//to-do hacer esto un poco más elegante tipo generar un estado inicial
@@ -74,6 +78,7 @@ export const useGame = (app: FirebaseApp) => {
 		playCard,
 		onNextButton,
 		init,
+		startGame,
 		connect,
 		dataToDrag,
 		playing,

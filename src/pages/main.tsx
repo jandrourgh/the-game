@@ -27,20 +27,20 @@ export const Main = () => {
 		playing,
 		resetGame,
 		connect,
+		startGame,
 	} = useGame(app);
 
 	useEffect(() => {
-		console.log(searchParams);
 		const session = searchParams.get("session");
 		if (!session) return;
-		connect(session);
-	}, [searchParams, connect]);
+		connect(session).then(() => init(0));
+	}, [searchParams, connect, init]);
 
 	const onSessionCreated = (id: string) => {
 		connect(id);
 	};
 	const onSessionJoined = (id: string) => {
-		connect(id);
+		connect(id).then(() => init(0));
 	};
 
 	return (
@@ -75,7 +75,7 @@ export const Main = () => {
 			) : (
 				<ButtonArea
 					app={app}
-					init={init}
+					startGame={startGame}
 					online={online}
 					setOnline={setOnline}
 					onSessionCreated={onSessionCreated}

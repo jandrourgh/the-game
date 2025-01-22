@@ -85,13 +85,13 @@ export const Stack = ({
 				</h2>
 
 				<Card number={lastCard} />
-				{show && (
+				{/* {show && (
 					<ul>
 						{cards.map((card) => (
 							<li key={card + "-" + id}>{card}</li>
 						))}
 					</ul>
-				)}
+				)} */}
 			</div>
 			<div>
 				<button onClick={() => setShow(!show)}>show</button>

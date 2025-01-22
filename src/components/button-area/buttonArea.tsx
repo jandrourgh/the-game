@@ -8,7 +8,7 @@ import { useJoin } from "../../hooks/useJoin";
 type TButtonAreaProps = {
 	online: boolean;
 	setOnline: (online: boolean) => void;
-	init: (number: number) => void;
+	startGame: () => void;
 	app: FirebaseApp;
 	onSessionCreated: (roomID: string) => void;
 	onSessionJoined: (roomID: string) => void;
@@ -17,10 +17,10 @@ type TButtonAreaProps = {
 export const ButtonArea: React.FC<TButtonAreaProps> = ({
 	online,
 	setOnline,
-	init,
 	app,
 	onSessionCreated,
 	onSessionJoined,
+	startGame,
 }) => {
 	const [name, setName] = useState("");
 	const { createSession, roomID, isInviting } = useCreate(app, name);
@@ -51,7 +51,7 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 				<label htmlFor="online-checkbox">Online</label>
 			</div>
 			{!online ? (
-				<button onClick={() => init(0)}>START</button>
+				<button onClick={() => startGame()}>START</button>
 			) : (
 				<>
 					<input
