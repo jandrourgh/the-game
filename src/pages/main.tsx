@@ -11,9 +11,8 @@ import { useSearchParams } from "react-router";
 export const Main = () => {
 	const { app } = useFirebase();
 	const [searchParams] = useSearchParams();
-
 	const [online, setOnline] = useState(true);
-
+	const [sessionFromURL, setSessionFromURL] = useState("");
 	const {
 		canPlay,
 		dataToDrag,
@@ -33,8 +32,8 @@ export const Main = () => {
 	useEffect(() => {
 		const session = searchParams.get("session");
 		if (!session) return;
-		connect(session).then(() => init(0));
-	}, [searchParams, connect, init]);
+		setSessionFromURL(session);
+	}, [searchParams]);
 
 	const onSessionCreated = (id: string) => {
 		console.log("onsessioncreated");
@@ -82,6 +81,7 @@ export const Main = () => {
 					setOnline={setOnline}
 					onSessionCreated={onSessionCreated}
 					onSessionJoined={onSessionJoined}
+					sessionFromURL={sessionFromURL}
 				/>
 			)}
 		</>

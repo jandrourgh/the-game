@@ -12,6 +12,7 @@ type TButtonAreaProps = {
 	app: FirebaseApp;
 	onSessionCreated: (roomID: string) => void;
 	onSessionJoined: (roomID: string) => void;
+	sessionFromURL: string;
 };
 
 export const ButtonArea: React.FC<TButtonAreaProps> = ({
@@ -21,6 +22,7 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 	onSessionCreated,
 	onSessionJoined,
 	startGame,
+	sessionFromURL,
 }) => {
 	const [name, setName] = useState("");
 	const { createSession, isInviting } = useCreate(
@@ -66,7 +68,6 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 						value={name}
 						onChange={(evt) => setName(evt.target.value)}
 					/>
-
 					<div className={styles.buttons}>
 						<button
 							disabled={name === "" || isInviting}
@@ -76,11 +77,14 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 						</button>
 						<button
 							disabled={name === "" || isInviting}
-							onClick={() => joinSession()}
+							onClick={() => joinSession(sessionFromURL)}
 						>
 							JOIN GAME
 						</button>
 					</div>
+					{sessionFromURL !== "" && (
+						<h2>Joining game {sessionFromURL}</h2>
+					)}
 				</>
 			)}
 		</div>

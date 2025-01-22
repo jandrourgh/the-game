@@ -20,7 +20,7 @@ export const useCreate = (
 			const shareData: ShareData = {
 				title: "The Game Invitation",
 				text: `${name} wants you to play The Game`,
-				url: url.toString() + "/",
+				url: url.toString(),
 			};
 			navigator.share(shareData);
 			setIsinviting(false);
