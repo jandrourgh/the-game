@@ -30,7 +30,7 @@ export const Stack = ({
 	cards,
 }: IStackProps) => {
 	const [okToAdd, setOkToAdd] = useState(false);
-	const [show, setShow] = useState(false);
+	// const [show, setShow] = useState(false);
 	const lastCard = useMemo(
 		() => (cards.length ? cards[cards.length - 1] : undefined),
 		[cards]
