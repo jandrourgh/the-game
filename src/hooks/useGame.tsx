@@ -13,7 +13,7 @@ export const useGame = (app: FirebaseApp) => {
 	const [hand, setHand] = useState<number[]>([]);
 	const [playing, setPlaying] = useState(false);
 	const [playedCards, setPlayedCards] = useState<number[]>([]);
-	const [stacks, setStacks] = useState<TStack[]>(generateStacks());
+	const [stacks, setStacks] = useState<TStack[]>([]);
 	const { canPlay } = useCanPlay(hand, stacks, deck);
 	const { connect, nextTurn, updateDeck, updateStacks, sessionData } =
 		useOnline(app);
@@ -31,17 +31,24 @@ export const useGame = (app: FirebaseApp) => {
 	);
 
 	const startGame = () => {
-		init(0);
 		setDeck(generateDeck(98));
-		setPlaying(true);
+		setStacks(generateStacks());
 	};
+
+	useEffect(() => {
+		if (deck.length && stacks.length && !playing && !hand.length) {
+			console.log("useEffect init playing");
+			init(0);
+			setPlaying(true);
+		}
+	}, [deck, stacks, playing, hand, init]);
+
 	useEffect(() => {
 		console.log({ sessionData });
 		if (!sessionData) return;
-		if (!playing) setPlaying(true);
 		setDeck(sessionData.deck);
 		setStacks(sessionData.stacks);
-	}, [sessionData, playing]);
+	}, [sessionData]);
 
 	const resetGame = () => {
 		//to-do hacer esto un poco más elegante tipo generar un estado inicial
