@@ -37,9 +37,11 @@ export const Main = () => {
 	}, [searchParams, connect, init]);
 
 	const onSessionCreated = (id: string) => {
-		connect(id);
+		console.log("onsessioncreated");
+		connect(id).then(() => init(0));
 	};
 	const onSessionJoined = (id: string) => {
+		console.log("onsessionjoined");
 		connect(id).then(() => init(0));
 	};
 

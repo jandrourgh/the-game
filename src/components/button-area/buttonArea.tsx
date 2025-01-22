@@ -1,7 +1,7 @@
 import { FirebaseApp } from "firebase/app";
 import { useCreate } from "../../hooks/useCreate";
 import styles from "./buttonArea.module.scss";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 // import { TSessionData } from "../../common/types";
 import { useJoin } from "../../hooks/useJoin";
 
@@ -23,20 +23,24 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 	startGame,
 }) => {
 	const [name, setName] = useState("");
-	const { createSession, roomID, isInviting } = useCreate(app, name);
-	const { joinSession, id } = useJoin();
+	const { createSession, isInviting } = useCreate(
+		app,
+		name,
+		onSessionCreated
+	);
+	const { joinSession } = useJoin(onSessionJoined);
 
-	useEffect(() => {
-		if (id) {
-			onSessionJoined(id);
-		}
-	}, [id, onSessionJoined]);
+	// useEffect(() => {
+	// 	if (id) {
+	// 		onSessionJoined(id);
+	// 	}
+	// }, [id, onSessionJoined]);
 
-	useEffect(() => {
-		if (roomID) {
-			onSessionCreated(roomID);
-		}
-	}, [roomID, onSessionCreated]);
+	// useEffect(() => {
+	// 	if (roomID) {
+	// 		onSessionCreated(roomID);
+	// 	}
+	// }, [roomID, onSessionCreated]);
 
 	return (
 		<div className={styles.buttonArea}>

@@ -5,11 +5,13 @@ import { useCallback, useState } from "react";
 import { customAlphabet, nanoid } from "nanoid";
 // import { TSessionData } from "../common/types";
 
-export const useCreate = (app: FirebaseApp, name: string) => {
+export const useCreate = (
+	app: FirebaseApp,
+	name: string,
+	onSessionCreated: (roomID: string) => void
+) => {
 	const db = getFirestore(app);
 	const [isInviting, setIsinviting] = useState(false);
-	const [roomID, setRoomId] = useState<undefined | string>(undefined);
-
 	const share = useCallback(
 		async (id: string) => {
 			const url = new URL(location.href);
@@ -27,6 +29,7 @@ export const useCreate = (app: FirebaseApp, name: string) => {
 	);
 
 	const createSession = async () => {
+		console.log("CREATE SESSION");
 		setIsinviting(true);
 		const uid = nanoid();
 		const deck = generateDeck(98);
@@ -43,7 +46,7 @@ export const useCreate = (app: FirebaseApp, name: string) => {
 		});
 
 		share(roomNumber);
-		setRoomId(roomNumber);
+		onSessionCreated(roomNumber);
 	};
-	return { createSession, isInviting, roomID };
+	return { createSession, isInviting };
 };

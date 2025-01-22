@@ -25,6 +25,7 @@ export const useOnline = (app: FirebaseApp) => {
 
 	const connect = useCallback(
 		async (roomID: string) => {
+			console.log("connect");
 			setLoading(true);
 			const roomRef = doc(db, "matches", roomID);
 			const roomDoc = await getDoc(roomRef);
@@ -33,10 +34,13 @@ export const useOnline = (app: FirebaseApp) => {
 				setSessionData(roomDoc.data() as TSessionData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
+					console.log("on snapshot");
 					setSessionData(evt.data() as TSessionData);
 				});
+				console.log("roomDoc exists");
 				return Promise.resolve(true);
 			} else {
+				console.log("error getting data");
 				setError("Error getting data");
 				return Promise.reject("Error getting data");
 			}
@@ -45,12 +49,14 @@ export const useOnline = (app: FirebaseApp) => {
 	);
 
 	const updateStacks = async (stacks: TStack[]) => {
+		console.log("update stacks");
 		if (!room || !sessionData) return;
 		const newSessionData: TSessionData = { ...sessionData, stacks: stacks };
 		await setDoc(room, newSessionData);
 	};
 
 	const updateDeck = async (deck: number[]) => {
+		console.log("update deck");
 		if (!room || !sessionData) return;
 		const newSessionData: TSessionData = { ...sessionData, deck: deck };
 		await setDoc(room, newSessionData);

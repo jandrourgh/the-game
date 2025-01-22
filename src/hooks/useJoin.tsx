@@ -1,11 +1,10 @@
-import { useState } from "react";
-
-export const useJoin = () => {
-	const [id, setId] = useState<string | null>("");
+export const useJoin = (onSessionJoined: (roomID: string) => void) => {
 	const joinSession = () => {
 		const session = prompt("Insert match ID");
 
-		setId(session);
+		if (session) {
+			onSessionJoined(session);
+		}
 	};
-	return { joinSession, id };
+	return { joinSession };
 };

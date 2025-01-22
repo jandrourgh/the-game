@@ -36,9 +36,10 @@ export const useGame = (app: FirebaseApp) => {
 	useEffect(() => {
 		console.log({ sessionData });
 		if (!sessionData) return;
+		if (!playing) setPlaying(true);
 		setDeck(sessionData.deck);
 		setStacks(sessionData.stacks);
-	}, [sessionData]);
+	}, [sessionData, playing]);
 
 	const resetGame = () => {
 		//to-do hacer esto un poco más elegante tipo generar un estado inicial
