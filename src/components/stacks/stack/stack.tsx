@@ -93,9 +93,9 @@ export const Stack = ({
 					</ul>
 				)} */}
 			</div>
-			<div>
+			{/* <div>
 				<button onClick={() => setShow(!show)}>show</button>
-			</div>
+			</div> */}
 		</div>
 	);
 };

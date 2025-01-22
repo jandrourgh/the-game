@@ -8,7 +8,7 @@ import { useOnline } from "./useOnline";
 const HAND_SIZE = 6;
 
 export const useGame = (app: FirebaseApp) => {
-	const [deck, setDeck] = useState<number[]>(generateDeck(98));
+	const [deck, setDeck] = useState<number[]>([]);
 	const [dataToDrag, setDataToDrag] = useState<undefined | number>(undefined);
 	const [hand, setHand] = useState<number[]>([]);
 	const [playing, setPlaying] = useState(false);
@@ -21,8 +21,9 @@ export const useGame = (app: FirebaseApp) => {
 	const init = useCallback(
 		(currentCards: number) => {
 			const cards = deck.slice(0, HAND_SIZE - currentCards);
-			setHand([...hand, ...cards]);
-			const newDeck = [...deck.filter((card) => !cards.includes(card))];
+			const newHand = [...hand, ...cards];
+			setHand(newHand);
+			const newDeck = [...deck.filter((card) => !newHand.includes(card))];
 			setDeck(newDeck);
 			updateDeck(newDeck);
 		},
@@ -31,6 +32,7 @@ export const useGame = (app: FirebaseApp) => {
 
 	const startGame = () => {
 		init(0);
+		setDeck(generateDeck(98));
 		setPlaying(true);
 	};
 	useEffect(() => {

@@ -32,18 +32,6 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 	);
 	const { joinSession } = useJoin(onSessionJoined);
 
-	// useEffect(() => {
-	// 	if (id) {
-	// 		onSessionJoined(id);
-	// 	}
-	// }, [id, onSessionJoined]);
-
-	// useEffect(() => {
-	// 	if (roomID) {
-	// 		onSessionCreated(roomID);
-	// 	}
-	// }, [roomID, onSessionCreated]);
-
 	return (
 		<div className={styles.buttonArea}>
 			<div>

@@ -31,6 +31,7 @@ export const useOnline = (app: FirebaseApp) => {
 			const roomDoc = await getDoc(roomRef);
 			setLoading(false);
 			if (roomDoc.exists()) {
+				console.log("roomDoc exists");
 				setSessionData(roomDoc.data() as TSessionData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
@@ -49,16 +50,17 @@ export const useOnline = (app: FirebaseApp) => {
 	);
 
 	const updateStacks = async (stacks: TStack[]) => {
-		console.log("update stacks");
+		console.log("update stacks", room, sessionData);
 		if (!room || !sessionData) return;
 		const newSessionData: TSessionData = { ...sessionData, stacks: stacks };
 		await setDoc(room, newSessionData);
 	};
 
 	const updateDeck = async (deck: number[]) => {
-		console.log("update deck");
+		console.log("update deck", room, sessionData);
 		if (!room || !sessionData) return;
 		const newSessionData: TSessionData = { ...sessionData, deck: deck };
+		console.log(deck.length);
 		await setDoc(room, newSessionData);
 	};
 
