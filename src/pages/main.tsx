@@ -19,7 +19,7 @@ export const Main = () => {
 		deck,
 		hand,
 		stacks,
-		init,
+		drawCards,
 		onCardAdded,
 		onNextButton,
 		playCard,
@@ -37,11 +37,11 @@ export const Main = () => {
 
 	const onSessionCreated = (id: string) => {
 		console.log("onsessioncreated");
-		connect(id).then(() => init(0));
+		connect(id).then(() => drawCards(0));
 	};
 	const onSessionJoined = (id: string) => {
 		console.log("onsessionjoined");
-		connect(id).then(() => init(0));
+		connect(id).then(() => drawCards(0));
 	};
 
 	return (

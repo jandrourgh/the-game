@@ -18,7 +18,7 @@ export const useGame = (app: FirebaseApp) => {
 	const { connect, nextTurn, updateDeck, updateStacks, sessionData } =
 		useOnline(app);
 
-	const init = useCallback(
+	const drawCards = useCallback(
 		(currentCards: number) => {
 			const cards = deck.slice(0, HAND_SIZE - currentCards);
 			const newHand = [...hand, ...cards];
@@ -38,10 +38,10 @@ export const useGame = (app: FirebaseApp) => {
 	useEffect(() => {
 		if (deck.length && stacks.length && !playing && !hand.length) {
 			console.log("useEffect init playing");
-			init(0);
+			drawCards(0);
 			setPlaying(true);
 		}
-	}, [deck, stacks, playing, hand, init]);
+	}, [deck, stacks, playing, hand, drawCards]);
 
 	useEffect(() => {
 		console.log({ sessionData });
@@ -78,16 +78,16 @@ export const useGame = (app: FirebaseApp) => {
 	};
 
 	const onNextButton = useCallback(() => {
-		init(hand.length);
+		drawCards(hand.length);
 		nextTurn("pip");
-	}, [hand, init, nextTurn]);
+	}, [hand, drawCards, nextTurn]);
 
 	return {
 		resetGame,
 		onCardAdded,
 		playCard,
 		onNextButton,
-		init,
+		drawCards,
 		startGame,
 		connect,
 		dataToDrag,
