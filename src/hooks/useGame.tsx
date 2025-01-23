@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { generateDeck, generateStacks } from "../common/utils";
 import { useCanPlay } from "./useCanPlay";
 import { TStack } from "../components/stacks/stack/stack";
@@ -15,8 +15,18 @@ export const useGame = (app: FirebaseApp) => {
 	const [playedCards, setPlayedCards] = useState<number[]>([]);
 	const [stacks, setStacks] = useState<TStack[]>([]);
 	const { canPlay } = useCanPlay(hand, stacks, deck);
-	const { connect, nextTurn, updateDeck, updateStacks, sessionData } =
+	const { connect, nextTurn, updateDeck, updateStacks, sessionData, myUser } =
 		useOnline(app);
+
+	const players = useMemo(() => {
+		if (!sessionData || !myUser) {
+			return [];
+		}
+		return sessionData.players.map((player) => ({
+			...player,
+			itsMe: player.uid === myUser.uid,
+		}));
+	}, [sessionData, myUser]);
 
 	const drawCards = useCallback(
 		(currentCards: number) => {
@@ -96,5 +106,6 @@ export const useGame = (app: FirebaseApp) => {
 		deck,
 		hand,
 		stacks,
+		players,
 	};
 };

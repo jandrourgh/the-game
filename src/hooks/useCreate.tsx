@@ -3,13 +3,13 @@ import { getFirestore, setDoc, doc } from "firebase/firestore";
 import { generateDeck, generateStacks } from "../common/utils";
 import { useCallback, useState } from "react";
 import { customAlphabet, nanoid } from "nanoid";
-import { TSessionData } from "../common/types";
+import { TSessionData, TUser } from "../common/types";
 // import { TSessionData } from "../common/types";
 
 export const useCreate = (
 	app: FirebaseApp,
 	name: string,
-	onSessionCreated: (roomID: string, sessionData: TSessionData) => void
+	onSessionCreated: (roomID: string, user: TUser) => void
 ) => {
 	const db = getFirestore(app);
 	const [isInviting, setIsinviting] = useState(false);
@@ -40,14 +40,14 @@ export const useCreate = (
 		const getRoomNumber = customAlphabet(alphabet, 6);
 		const roomNumber = getRoomNumber();
 		const sessionData: TSessionData = {
-			owner: uid,
+			owner: { name, uid },
 			deck: deck,
 			stacks: stacks,
 			players: players,
 		};
 		await setDoc(doc(db, "matches", roomNumber), sessionData);
 		share(roomNumber);
-		onSessionCreated(roomNumber, sessionData);
+		onSessionCreated(roomNumber, { name, uid });
 	};
 	return { createSession, isInviting };
 };

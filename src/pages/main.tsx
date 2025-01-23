@@ -7,6 +7,8 @@ import { ButtonArea } from "../components/button-area/buttonArea";
 import { useGame } from "../hooks/useGame";
 import styles from "./main.module.scss";
 import { useSearchParams } from "react-router";
+import { TUser } from "../common/types";
+import { Players } from "../components/player/player";
 
 export const Main = () => {
 	const { app } = useFirebase();
@@ -19,6 +21,7 @@ export const Main = () => {
 		deck,
 		hand,
 		stacks,
+		players,
 		drawCards,
 		onCardAdded,
 		onNextButton,
@@ -35,15 +38,16 @@ export const Main = () => {
 		setSessionFromURL(session);
 	}, [searchParams]);
 
-	const onSessionCreated = (id: string) => {
+	const onSessionCreated = (id: string, user: TUser) => {
 		console.log("onsessioncreated");
-		connect(id).then(() => drawCards(0));
+		connect(id, user).then(() => drawCards(0));
 	};
-	const onSessionJoined = (id: string) => {
+	const onSessionJoined = (id: string, user: TUser) => {
 		console.log("onsessionjoined");
-		connect(id).then(() => drawCards(0));
+		connect(id, user).then(() => drawCards(0));
 	};
 
+	console.log(players);
 	return (
 		<>
 			{!canPlay && (
@@ -60,6 +64,7 @@ export const Main = () => {
 						dataToDrag={dataToDrag}
 						stacks={stacks}
 					/>
+					<Players players={players} />
 					<Hand playCard={(card) => playCard(card)} cards={hand} />
 					{/* to do: disabled dinámico con cartas jugadas */}
 					<div className={styles.buttonArea}>

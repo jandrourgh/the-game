@@ -4,14 +4,15 @@ import styles from "./buttonArea.module.scss";
 import { useState } from "react";
 // import { TSessionData } from "../../common/types";
 import { useJoin } from "../../hooks/useJoin";
+import { TUser } from "../../common/types";
 
 type TButtonAreaProps = {
 	online: boolean;
 	setOnline: (online: boolean) => void;
 	startGame: () => void;
 	app: FirebaseApp;
-	onSessionCreated: (roomID: string) => void;
-	onSessionJoined: (roomID: string) => void;
+	onSessionCreated: (roomID: string, user: TUser) => void;
+	onSessionJoined: (roomID: string, user: TUser) => void;
 	sessionFromURL: string;
 };
 
@@ -30,7 +31,7 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 		name,
 		onSessionCreated
 	);
-	const { joinSession } = useJoin(onSessionJoined);
+	const { joinSession } = useJoin(onSessionJoined, name);
 
 	return (
 		<div className={styles.buttonArea}>

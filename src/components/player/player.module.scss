@@ -1,0 +1,18 @@
+.container {
+	display: flex;
+	flex-direction: row;
+	padding: 0 1rem;
+}
+.itsMe {
+	font-weight: bold;
+	border: none !important;
+}
+.player {
+	padding: 1rem;
+	border: 1px solid grey;
+	border-radius: 1rem;
+	text-align: center;
+	&:not(last-child) {
+		margin-right: 1rem;
+	}
+}

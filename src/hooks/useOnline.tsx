@@ -5,10 +5,10 @@ import {
 	doc,
 	DocumentData,
 	DocumentReference,
-	setDoc,
 	onSnapshot,
+	updateDoc,
 } from "firebase/firestore";
-import { TSessionData } from "../common/types";
+import { TSessionData, TUser } from "../common/types";
 import { useCallback, useMemo, useState } from "react";
 import { TStack } from "../components/stacks/stack/stack";
 
@@ -21,27 +21,38 @@ export const useOnline = (app: FirebaseApp) => {
 	const [room, setRoom] = useState<
 		DocumentReference<DocumentData, DocumentData> | undefined
 	>(undefined);
+	const [myUser, setMyUser] = useState<TUser | undefined>(undefined);
 	const db = useMemo(() => getFirestore(app), [app]);
 
 	const connect = useCallback(
-		async (roomID: string) => {
-			console.log("connect");
+		async (roomID: string, user: TUser) => {
+			console.log("connect", { user });
+			setMyUser(user);
 			setLoading(true);
 			const roomRef = doc(db, "matches", roomID);
 			const roomDoc = await getDoc(roomRef);
 			setLoading(false);
 			if (roomDoc.exists()) {
-				console.log("roomDoc exists");
-				setSessionData(roomDoc.data() as TSessionData);
+				console.log("roomdoc existe");
+				const roomDocData = roomDoc.data() as TSessionData;
+				if (
+					roomDocData.players.every(
+						(player) => player.uid !== user.uid
+					)
+				) {
+					console.log("existe", user);
+					await updateDoc(roomRef, {
+						players: [...roomDocData.players, user],
+					}).then(() => console.log("he updateado ----"));
+				}
+				setSessionData(roomDocData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
 					console.log("on snapshot");
 					setSessionData(evt.data() as TSessionData);
 				});
-				console.log("roomDoc exists");
 				return Promise.resolve(true);
 			} else {
-				console.log("error getting data");
 				setError("Error getting data");
 				return Promise.reject("Error getting data");
 			}
@@ -50,18 +61,16 @@ export const useOnline = (app: FirebaseApp) => {
 	);
 
 	const updateStacks = async (stacks: TStack[]) => {
-		console.log("update stacks", room, sessionData);
 		if (!room || !sessionData) return;
-		const newSessionData: TSessionData = { ...sessionData, stacks: stacks };
-		await setDoc(room, newSessionData);
+		// const newSessionData: TSessionData = { ...sessionData, stacks: stacks };
+		await updateDoc(room, { stacks: stacks });
 	};
 
 	const updateDeck = async (deck: number[]) => {
-		console.log("update deck", room, sessionData);
 		if (!room || !sessionData) return;
-		const newSessionData: TSessionData = { ...sessionData, deck: deck };
+		// const newSessionData: TSessionData = { ...sessionData, deck: deck };
 		console.log(deck.length);
-		await setDoc(room, newSessionData);
+		await updateDoc(room, { deck: deck });
 	};
 
 	const nextTurn = async (id: string) => {
@@ -76,5 +85,6 @@ export const useOnline = (app: FirebaseApp) => {
 		sessionData,
 		loading,
 		error,
+		myUser,
 	};
 };

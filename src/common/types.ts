@@ -6,7 +6,7 @@ export type TUser = {
 };
 
 export type TSessionData = {
-	owner: string;
+	owner: TUser;
 	deck: number[];
 	stacks: TStack[];
 	players: TUser[];
