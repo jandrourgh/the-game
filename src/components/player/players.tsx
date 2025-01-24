@@ -1,6 +1,5 @@
 import { TUser } from "../../common/types";
-import styles from "./player.module.scss";
-
+import styles from "./players.module.scss";
 interface IPlayerProps {
 	players: (TUser & { itsMe: boolean })[];
 }
@@ -10,11 +9,17 @@ export const Players = ({ players }: IPlayerProps) => {
 		<div className={styles.container}>
 			{players.map((player) => (
 				<div
-					className={`${styles.player} ${
-						player.itsMe && styles.itsMe
-					}`}
+					className={`${styles.player} ${player.turn && styles.turn}`}
 				>
-					{player.itsMe ? "Me" : player.name}
+					<i
+						className={`${
+							player.itsMe
+								? "bi-person-arms-up"
+								: "bi-person-standing"
+						}`}
+					/>
+					<br />
+					{player.name}
 				</div>
 			))}
 		</div>

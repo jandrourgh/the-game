@@ -3,6 +3,7 @@ import { TStack } from "../components/stacks/stack/stack";
 export type TUser = {
 	name: string;
 	uid: string;
+	turn: boolean;
 };
 
 export type TSessionData = {
@@ -10,4 +11,5 @@ export type TSessionData = {
 	deck: number[];
 	stacks: TStack[];
 	players: TUser[];
+	firstMove: boolean;
 };

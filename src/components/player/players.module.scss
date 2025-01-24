@@ -2,17 +2,25 @@
 	display: flex;
 	flex-direction: row;
 	padding: 0 1rem;
+	flex-wrap: nowrap;
+	overflow-x: scroll;
 }
 .itsMe {
 	font-weight: bold;
-	border: none !important;
 }
 .player {
 	padding: 1rem;
-	border: 1px solid grey;
 	border-radius: 1rem;
 	text-align: center;
+	margin: 0.5rem 0;
 	&:not(last-child) {
 		margin-right: 1rem;
+	}
+	i {
+		font-size: 2rem;
+	}
+	&.turn {
+		color: #242424;
+		background-color: #c5c5c5;
 	}
 }

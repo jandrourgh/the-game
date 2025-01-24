@@ -8,7 +8,7 @@ import { useGame } from "../hooks/useGame";
 import styles from "./main.module.scss";
 import { useSearchParams } from "react-router";
 import { TUser } from "../common/types";
-import { Players } from "../components/player/player";
+import { Players } from "../components/player/players";
 
 export const Main = () => {
 	const { app } = useFirebase();
@@ -39,15 +39,12 @@ export const Main = () => {
 	}, [searchParams]);
 
 	const onSessionCreated = (id: string, user: TUser) => {
-		console.log("onsessioncreated");
 		connect(id, user).then(() => drawCards(0));
 	};
 	const onSessionJoined = (id: string, user: TUser) => {
-		console.log("onsessionjoined");
 		connect(id, user).then(() => drawCards(0));
 	};
 
-	console.log(players);
 	return (
 		<>
 			{!canPlay && (

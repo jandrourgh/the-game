@@ -26,24 +26,21 @@ export const useOnline = (app: FirebaseApp) => {
 
 	const connect = useCallback(
 		async (roomID: string, user: TUser) => {
-			console.log("connect", { user });
 			setMyUser(user);
 			setLoading(true);
 			const roomRef = doc(db, "matches", roomID);
 			const roomDoc = await getDoc(roomRef);
 			setLoading(false);
 			if (roomDoc.exists()) {
-				console.log("roomdoc existe");
 				const roomDocData = roomDoc.data() as TSessionData;
 				if (
 					roomDocData.players.every(
 						(player) => player.uid !== user.uid
 					)
 				) {
-					console.log("existe", user);
 					await updateDoc(roomRef, {
 						players: [...roomDocData.players, user],
-					}).then(() => console.log("he updateado ----"));
+					});
 				}
 				setSessionData(roomDocData);
 				setRoom(roomRef);
@@ -69,7 +66,6 @@ export const useOnline = (app: FirebaseApp) => {
 	const updateDeck = async (deck: number[]) => {
 		if (!room || !sessionData) return;
 		// const newSessionData: TSessionData = { ...sessionData, deck: deck };
-		console.log(deck.length);
 		await updateDoc(room, { deck: deck });
 	};
 
@@ -77,11 +73,23 @@ export const useOnline = (app: FirebaseApp) => {
 		console.log(id);
 	};
 
+	const setCurrentTurn = async (user: TUser) => {
+		if (!room || !sessionData) return;
+		const playersUpdated: TUser[] = sessionData.players.map((player) =>
+			player.uid == user.uid
+				? { ...player, turn: true }
+				: { ...player, turn: false }
+		);
+
+		await updateDoc(room, { firstMove: true, players: playersUpdated });
+	};
+
 	return {
 		connect,
 		updateStacks,
 		updateDeck,
 		nextTurn,
+		setCurrentTurn,
 		sessionData,
 		loading,
 		error,

@@ -17,7 +17,6 @@ export const useCreate = (
 		async (id: string) => {
 			const url = new URL(location.href);
 			url.searchParams.append("session", id);
-			console.log(url);
 			const shareData: ShareData = {
 				title: "The Game Invitation",
 				text: `${name} wants you to play The Game`,
@@ -30,24 +29,25 @@ export const useCreate = (
 	);
 
 	const createSession = async () => {
-		console.log("CREATE SESSION");
 		setIsinviting(true);
 		const uid = nanoid();
 		const deck = generateDeck(98);
 		const stacks = generateStacks();
-		const players = [{ name: name, uid: uid }];
+		const myUser = { name: name, uid: uid, turn: false };
+		const players: TUser[] = [myUser];
 		const alphabet = "1234567890";
 		const getRoomNumber = customAlphabet(alphabet, 6);
 		const roomNumber = getRoomNumber();
 		const sessionData: TSessionData = {
-			owner: { name, uid },
+			owner: { name, uid, turn: false },
 			deck: deck,
 			stacks: stacks,
 			players: players,
+			firstMove: false,
 		};
 		await setDoc(doc(db, "matches", roomNumber), sessionData);
 		share(roomNumber);
-		onSessionCreated(roomNumber, { name, uid });
+		onSessionCreated(roomNumber, myUser);
 	};
 	return { createSession, isInviting };
 };

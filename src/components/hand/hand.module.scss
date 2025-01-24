@@ -1,9 +1,9 @@
 .hand {
 	padding: 2rem 0;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: flex-start;
+	overflow-x: scroll;
 	@media screen and (max-width: 480px) {
 		padding: 0.5rem 0;
-		flex-wrap: wrap;
 	}
 }

@@ -15,8 +15,14 @@ export const useGame = (app: FirebaseApp) => {
 	const [playedCards, setPlayedCards] = useState<number[]>([]);
 	const [stacks, setStacks] = useState<TStack[]>([]);
 	const { canPlay } = useCanPlay(hand, stacks, deck);
-	const { connect, nextTurn, updateDeck, updateStacks, sessionData, myUser } =
-		useOnline(app);
+	const {
+		connect,
+		updateDeck,
+		updateStacks,
+		setCurrentTurn,
+		sessionData,
+		myUser,
+	} = useOnline(app);
 
 	const players = useMemo(() => {
 		if (!sessionData || !myUser) {
@@ -47,14 +53,12 @@ export const useGame = (app: FirebaseApp) => {
 
 	useEffect(() => {
 		if (deck.length && stacks.length && !playing && !hand.length) {
-			console.log("useEffect init playing");
 			drawCards(0);
 			setPlaying(true);
 		}
 	}, [deck, stacks, playing, hand, drawCards]);
 
 	useEffect(() => {
-		console.log({ sessionData });
 		if (!sessionData) return;
 		setDeck(sessionData.deck);
 		setStacks(sessionData.stacks);
@@ -81,6 +85,10 @@ export const useGame = (app: FirebaseApp) => {
 		updateStacks(newStacks);
 		setDataToDrag(undefined);
 		setHand([...hand.filter((filtered) => filtered !== card)]);
+		if (sessionData?.firstMove == false) {
+			if (!myUser) return;
+			setCurrentTurn(myUser);
+		}
 	};
 
 	const playCard = (card: number) => {
@@ -88,9 +96,25 @@ export const useGame = (app: FirebaseApp) => {
 	};
 
 	const onNextButton = useCallback(() => {
+		console.log("on next button");
 		drawCards(hand.length);
-		nextTurn("pip");
-	}, [hand, drawCards, nextTurn]);
+		if (!sessionData) return;
+		let userIndex = sessionData.players.findIndex((user) => user.turn);
+		if (userIndex == -1 || userIndex === undefined) {
+			return;
+		}
+		console.log("tengo userindex", userIndex);
+		if (userIndex === sessionData.players.length - 1) {
+			userIndex = 0;
+		} else {
+			userIndex++;
+		}
+		const nextPlayer = sessionData.players.at(userIndex);
+		if (!nextPlayer) {
+			return;
+		}
+		setCurrentTurn(nextPlayer);
+	}, [hand, drawCards, setCurrentTurn, sessionData]);
 
 	return {
 		resetGame,
