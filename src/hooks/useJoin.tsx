@@ -6,7 +6,7 @@ export const useJoin = (
 	name: string
 ) => {
 	const joinSession = (sessionFromURL: string) => {
-		const user: TUser = { name, uid: nanoid() };
+		const user: TUser = { name, uid: nanoid(), turn: false };
 		if (sessionFromURL !== "") {
 			onSessionJoined(sessionFromURL, user);
 			return;
