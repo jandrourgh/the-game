@@ -8,13 +8,16 @@
 	align-items: center;
 	background-color: #c5c5c5;
 	color: #242424;
+	transition: all 0.5s;
+	border: 1px solid #242424;
 	&.nan {
 		opacity: 0.2;
 	}
 	&.playing {
-		-webkit-box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
-		-moz-box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
-		box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
+		transform: scale(1.2) rotateX(20deg);
+		// -webkit-box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
+		// -moz-box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
+		// box-shadow: 9px 10px 38px 1px rgba(212, 212, 212, 0.28);
 	}
 	@media screen and (max-width: 480px) {
 		min-height: 6rem;

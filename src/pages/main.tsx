@@ -30,6 +30,7 @@ export const Main = () => {
 		resetGame,
 		connect,
 		startGame,
+		canIMove,
 	} = useGame(app);
 
 	useEffect(() => {
@@ -62,7 +63,11 @@ export const Main = () => {
 						stacks={stacks}
 					/>
 					<Players players={players} />
-					<Hand playCard={(card) => playCard(card)} cards={hand} />
+					<Hand
+						playCard={(card) => playCard(card)}
+						cards={hand}
+						enabled={canIMove}
+					/>
 					{/* to do: disabled dinámico con cartas jugadas */}
 					<div className={styles.buttonArea}>
 						<button

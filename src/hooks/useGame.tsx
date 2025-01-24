@@ -26,6 +26,7 @@ export const useGame = (app: FirebaseApp) => {
 
 	const players = useMemo(() => {
 		if (!sessionData || !myUser) {
+			console.log("no hay una mierda", sessionData, myUser);
 			return [];
 		}
 		return sessionData.players.map((player) => ({
@@ -96,14 +97,12 @@ export const useGame = (app: FirebaseApp) => {
 	};
 
 	const onNextButton = useCallback(() => {
-		console.log("on next button");
 		drawCards(hand.length);
 		if (!sessionData) return;
 		let userIndex = sessionData.players.findIndex((user) => user.turn);
 		if (userIndex == -1 || userIndex === undefined) {
 			return;
 		}
-		console.log("tengo userindex", userIndex);
 		if (userIndex === sessionData.players.length - 1) {
 			userIndex = 0;
 		} else {
@@ -115,6 +114,12 @@ export const useGame = (app: FirebaseApp) => {
 		}
 		setCurrentTurn(nextPlayer);
 	}, [hand, drawCards, setCurrentTurn, sessionData]);
+
+	const canIMove = useMemo(() => {
+		if (!sessionData || !myUser) return true;
+		if (sessionData.firstMove === false) return true;
+		return myUser.turn;
+	}, [myUser, sessionData]);
 
 	return {
 		resetGame,
@@ -131,5 +136,6 @@ export const useGame = (app: FirebaseApp) => {
 		hand,
 		stacks,
 		players,
+		canIMove,
 	};
 };

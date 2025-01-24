@@ -9,7 +9,7 @@ import {
 	updateDoc,
 } from "firebase/firestore";
 import { TSessionData, TUser } from "../common/types";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { TStack } from "../components/stacks/stack/stack";
 
 export const useOnline = (app: FirebaseApp) => {
@@ -23,6 +23,13 @@ export const useOnline = (app: FirebaseApp) => {
 	>(undefined);
 	const [myUser, setMyUser] = useState<TUser | undefined>(undefined);
 	const db = useMemo(() => getFirestore(app), [app]);
+
+	useEffect(() => {
+		if (!sessionData || !myUser) return;
+		setMyUser(
+			sessionData?.players.find((player) => player.uid === myUser.uid)
+		);
+	}, [sessionData, myUser]);
 
 	const connect = useCallback(
 		async (roomID: string, user: TUser) => {
@@ -42,7 +49,7 @@ export const useOnline = (app: FirebaseApp) => {
 						players: [...roomDocData.players, user],
 					});
 				}
-				setSessionData(roomDocData);
+				// setSessionData(roomDocData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
 					console.log("on snapshot");
@@ -74,12 +81,15 @@ export const useOnline = (app: FirebaseApp) => {
 	};
 
 	const setCurrentTurn = async (user: TUser) => {
-		if (!room || !sessionData) return;
-		const playersUpdated: TUser[] = sessionData.players.map((player) =>
-			player.uid == user.uid
+		if (!room || !sessionData || !myUser) return;
+		const playersUpdated: TUser[] = sessionData.players.map((player) => {
+			if (myUser.uid === player.uid) {
+				setMyUser({ ...myUser, turn: true });
+			}
+			return player.uid == user.uid
 				? { ...player, turn: true }
-				: { ...player, turn: false }
-		);
+				: { ...player, turn: false };
+		});
 
 		await updateDoc(room, { firstMove: true, players: playersUpdated });
 	};
