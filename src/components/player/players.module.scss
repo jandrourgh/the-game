@@ -9,15 +9,15 @@
 	font-weight: bold;
 }
 .player {
-	padding: 1rem;
+	padding: 0.6rem;
 	border-radius: 1rem;
 	text-align: center;
-	margin: 0.5rem 0;
+	margin: 0.2rem 0;
 	&:not(last-child) {
 		margin-right: 1rem;
 	}
 	i {
-		font-size: 2rem;
+		font-size: 1.5rem;
 	}
 	&.turn {
 		color: #242424;

@@ -1,5 +1,4 @@
 .hand {
-	padding: 2rem 0;
 	display: flex;
 	justify-content: flex-start;
 	overflow-x: scroll;
@@ -7,19 +6,7 @@
 	perspective: 300px;
 	perspective-origin: center center;
 	position: relative;
-	.wait {
-		position: absolute;
-		top: 0;
-		left: 0;
-		height: 100%;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		opacity: 0.5;
-		background-color: #1c1c1c;
-	}
+	z-index: 999;
 	@media screen and (max-width: 480px) {
-		padding: 0.5rem 0;
 	}
 }

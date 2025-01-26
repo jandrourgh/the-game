@@ -57,7 +57,6 @@ export const Main = () => {
 			{playing ? (
 				<>
 					<Stacks
-						remainingCards={deck.length + hand.length}
 						onCardAdded={(number, id) => onCardAdded(number, id)}
 						dataToDrag={dataToDrag}
 						stacks={stacks}
@@ -75,7 +74,9 @@ export const Main = () => {
 							onClick={onNextButton}
 						>
 							{hand.length > 4
-								? `Play ${hand.length - 4} more`
+								? `Play ${hand.length - 4} more. ${
+										deck.length + hand.length
+								  } remaining.`
 								: "Next"}
 						</button>
 					</div>

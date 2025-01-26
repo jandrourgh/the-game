@@ -1,19 +1,26 @@
 .buttonArea {
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	flex-direction: column;
+	display: grid;
+	grid-template-rows: repeat(1fr);
+	grid-template-columns: repeat(1fr);
 	height: 100%;
 	input {
+		width: 100%;
+		text-align: center;
 		padding: 1em;
 		font-weight: bold;
-		margin: 1em;
+		font-size: 1.5rem;
 	}
 }
+
 .buttons {
 	display: flex;
 	justify-content: center;
 	flex-wrap: wrap;
+	button {
+		border: 1px solid #242424;
+		width: 50%;
+		margin: 0;
+	}
 }
 button {
 	margin: 1rem;

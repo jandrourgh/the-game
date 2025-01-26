@@ -1,6 +1,8 @@
 .buttonArea {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	padding: 3rem;
+	flex-grow: 1;
+	button {
+		height: 100%;
+		margin: 0;
+		width: 100%;
+	}
 }

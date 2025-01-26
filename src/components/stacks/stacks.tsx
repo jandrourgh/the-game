@@ -7,20 +7,15 @@ interface IStacksProps {
 	dataToDrag: undefined | number;
 	onCardAdded: (number: number, id: string) => void;
 	stacks: TStack[];
-	remainingCards: number;
 }
 
 export const Stacks: FC<IStacksProps> = ({
 	dataToDrag,
 	onCardAdded,
 	stacks,
-	remainingCards,
 }) => {
 	return (
 		<>
-			<h2 className={styles.remaining}>
-				Remaining cards: {remainingCards}
-			</h2>
 			<div className={styles.stacks}>
 				{stacks.map(({ direction, id, cards }) => {
 					return (
@@ -36,7 +31,6 @@ export const Stacks: FC<IStacksProps> = ({
 					);
 				})}
 			</div>
-			<hr />
 		</>
 	);
 };

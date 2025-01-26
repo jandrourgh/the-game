@@ -49,14 +49,17 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 				<button onClick={() => startGame()}>START</button>
 			) : (
 				<>
-					<input
-						placeholder="Your name please"
-						type="text"
-						name="name"
-						id="name"
-						value={name}
-						onChange={(evt) => setName(evt.target.value)}
-					/>
+					<div>
+						<input
+							className={styles.input}
+							placeholder="Your name please"
+							type="text"
+							name="name"
+							id="name"
+							value={name}
+							onChange={(evt) => setName(evt.target.value)}
+						/>
+					</div>
 					<div className={styles.buttons}>
 						<button
 							disabled={name === "" || isInviting}
