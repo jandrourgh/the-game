@@ -26,7 +26,6 @@ export const useGame = (app: FirebaseApp) => {
 
 	const players = useMemo(() => {
 		if (!sessionData || !myUser) {
-			console.log("no hay una mierda", sessionData, myUser);
 			return [];
 		}
 		return sessionData.players.map((player) => ({

@@ -52,7 +52,6 @@ export const useOnline = (app: FirebaseApp) => {
 				// setSessionData(roomDocData);
 				setRoom(roomRef);
 				onSnapshot(roomRef, (evt) => {
-					console.log("on snapshot");
 					setSessionData(evt.data() as TSessionData);
 				});
 				return Promise.resolve(true);

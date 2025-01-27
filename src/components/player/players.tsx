@@ -9,6 +9,7 @@ export const Players = ({ players }: IPlayerProps) => {
 		<div className={styles.container}>
 			{players.map((player) => (
 				<div
+					key={player.uid}
 					className={`${styles.player} ${player.turn && styles.turn}`}
 				>
 					<i
