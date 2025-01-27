@@ -35,16 +35,14 @@ export const ButtonArea: React.FC<TButtonAreaProps> = ({
 
 	return (
 		<div className={styles.buttonArea}>
-			<div>
-				<input
-					type="checkbox"
-					id="online-checkbox"
-					name="online-checkbox"
-					checked={online}
-					onChange={() => setOnline(!online)}
-				/>
-				<label htmlFor="online-checkbox">Online</label>
-			</div>
+			<button
+				onClick={() => setOnline(!online)}
+				className={styles.onlineButton}
+			>
+				<i className={`${online ? "bi-wifi" : "bi-wifi-off"}`}></i>
+			</button>
+			{/* <label htmlFor="online-checkbox">Online</label> */}
+
 			{!online ? (
 				<button onClick={() => startGame()}>START</button>
 			) : (
