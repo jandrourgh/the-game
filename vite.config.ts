@@ -18,6 +18,7 @@ export default defineConfig({
 						type: "image/png",
 					},
 				],
+				handle_links: "preferred",
 				background_color: "#242424",
 				theme_color: "#242424",
 			},
